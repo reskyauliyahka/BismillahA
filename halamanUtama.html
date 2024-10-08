@@ -16,21 +16,20 @@
         body {
             display: flex;
             background-color: #f4f4f4;
+            height: 100vh;
         }
 
+        /* Sidebar */
         .sidebar {
             width: 250px;
             background-color: #630000;
             padding: 20px;
             height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
         }
 
         .logo img {
-            width: 168px; 
-            height: 42px; 
+            width: 168px;
+            height: 42px;
             margin-bottom: 40px;
             margin-left: 15px;
         }
@@ -44,85 +43,177 @@
             display: flex;
             align-items: center;
             font-size: 18px;
-            color: #FFB800;
+            color: #FFFFFF;
             margin-bottom: 20px;
             margin-left: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 175px; /* Lebar normal */
+            height: 45px; /* Tinggi normal */
+            padding: 10px 10px; /* Padding normal */
+            transition: background-color 0.3s ease, coloe 0.3s, transform 0.3s ease;
         }
 
-        .menu-item a {
-            color: #FFFFFF;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
+        .menu-item:hover {
+            width: 175px; /* Lebar saat dihover */
+            height: 45px; /* Tinggi saat dihover */
+            background-color: #FFB800;
+            color: #630000;
+            transform: scale(1.00);
         }
 
-        .icon {
-            width: 25px;
-            height: 25px;
-            margin-right: 10px;
+        .menu-item:active {
+            background-color: #e6a700;
+            transform: scale(1.00); /* You can keep it if you want the same scale on active */
         }
 
-        .text {
+        .menu-item .text {
             font-size: 16px;
             font-weight: 300;
         }
 
-        .content-container {
-            margin-left: 250px;
-            padding: 20px;
-            width: calc(100% - 250px);
-            height: 100vh;
-            overflow: hidden;
+        /* Main content */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e3b4e;
+        }
+
+        .dashboard-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar input {
+            width: 255px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .user-profile .user-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         iframe {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 60px); /* Sesuaikan tinggi iframe agar pas dengan konten */
             border: none;
+            margin-top: 0; /* Menghapus margin atas */
+        }
+
+        /* Notification Box */
+        .notification-box {
+            display: none;
+            position: absolute;
+            right: 30px;
+            top: 80px; /* Adjust this value according to your layout */
+            width: 300px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        .notification-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .notification-item:last-child {
+            margin-bottom: 0;
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <div class="logo">
-            <img src="images/K_Nows_1-removebg-preview 1.png" alt="logo">
+            <img src="images/K_Nows__1_-removebg-preview 1.png" alt="logo">
         </div>
         <ul class="menu-list">
-            <li class="menu-item">
-                <a href="#" onclick="loadPage('dasboard.html')">
-                    <img class="icon" src="images/home_kuning.png" alt="home">
-                    <span class="text">Dashboard</span>
-                </a>
+            <li class="menu-item" onclick="loadPage('dashboard.html', 'Dashboard')">
+                <span class="text">Dashboard</span>
             </li>
-            <li class="menu-item">
-                <a href="#" onclick="loadPage('inventory.html')"> 
-                    <img class="icon" src="images/inventory.png" alt="inventory">
-                    <span class="text">Inventory</span>
-                </a>
+            <li class="menu-item" onclick="loadPage('inventory.html', 'Inventory')">
+                <span class="text">Inventory</span>
             </li>
-            <li class="menu-item">
-                <a href="#" onclick="loadPage('customers.html')"> 
-                    <img class="icon" src="images/inventory.png" alt="inventory">
-                    <span class="text">Customers</span>
-                </a>
+            <li class="menu-item" onclick="loadPage('orders.html', 'Orders')">
+                <span class="text">Orders</span>
             </li>
-            <li class="menu-item">
-                <a href="#" onclick="loadPage('orders.html')"> 
-                    <img class="icon" src="images/inventory.png" alt="inventory">
-                    <span class="text">Orders</span>
-                </a>
+            <li class="menu-item" onclick="loadPage('customers.html', 'Customers')">
+                <span class="text">Customers</span>
             </li>
-            <!-- Tambahkan item menu lain sesuai kebutuhan -->
+            <li class="menu-item" onclick="logout()">
+                <span class="text">Logout</span>
+            </li>
         </ul>
     </div>
 
-    <div class="content-container">
-        <iframe id="contentFrame" src="dashboard.html"></iframe> <!-- Halaman awal -->
+    <div class="main-content">
+        <div class="dashboard-header">
+            <div class="dashboard-title" id="dashboardTitle">Dashboard</div>
+            <div class="dashboard-icons">
+                <img src="images/Group 519.png" alt="notifikasi" height="50" width="50" onclick="toggleNotification()">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for something" id="search">
+                </div>
+                <div class="user-profile">
+                    <img src="images/profile.jpeg" alt="User" class="user-image" height="60" width="60">
+                </div>
+            </div>
+        </div>
+
+        <iframe id="contentFrame" src="dashboard.html"></iframe>
+
+        <!-- Notification Box -->
+        <div class="notification-box" id="notificationBox">
+            <div class="notification-item">Notification 1</div>
+            <div class="notification-item">Notification 2</div>
+            <div class="notification-item">Notification 3</div>
+        </div>
     </div>
 
     <script>
-        function loadPage(page) {
+        function loadPage(page, title) {
             document.getElementById('contentFrame').src = page; // Muat konten di iframe utama
+            document.getElementById('dashboardTitle').textContent = title; // Perbarui judul
+        }
+
+        function toggleNotification() {
+            const notificationBox = document.getElementById('notificationBox');
+            if (notificationBox.style.display === "none" || notificationBox.style.display === "") {
+                notificationBox.style.display = "block"; // Tampilkan kotak notifikasi
+            } else {
+                notificationBox.style.display = "none"; // Sembunyikan kotak notifikasi
+            }
+        }
+
+        function logout() {
+            window.location.href = 'halamanLogin.html'; // Kembali ke halaman login
         }
     </script>
 </body>

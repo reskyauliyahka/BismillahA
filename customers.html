@@ -20,6 +20,7 @@
       display: flex;
       flex-direction: column;
       flex-grow: 1;
+      margin-top: 5px; /* Adjusted margin-top for the fixed navbar */
     }
 
     table {
@@ -27,10 +28,10 @@
       width: 100%;
       border-collapse: collapse;
     }
+    
     th, td {
       padding: 10px;
       text-align: left;
-      /* color: white; */
     }
 
     .btn-order-details {
@@ -73,35 +74,26 @@
       z-index: 1000;
     }
 
-    .main-content {
-      margin-top: 75px; /* Offset for fixed navbar */
+    /* Adjusting table container for a better appearance */
+    .table-container {
+      margin-top: 20px; /* This ensures the table is not too far from the top */
+      padding: 20px; /* Added padding for better spacing */
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar bg-body-tertiary">
-    <div class="container-fluid d-flex fixed-top">
-      <a class="navbar-brand">Customers</a>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-
   <!-- Main Content -->
   <div class="container-fluid main-content">
-    <div class="table-container bg-white p-4 rounded shadow-sm">
+    <div class="table-container bg-white rounded shadow-sm">
       <!-- Customer Table -->
       <table class="table table-hover" style="border-radius: 25px; overflow: hidden;">
         <thead>
           <tr>
-            <th style="color: #718EBF;">Name</th>
-            <th style="color: #718EBF;">Phone Number</th>
-            <th style="color: #718EBF;">Order Details</th>
-            <th style="color: #718EBF;">Product</th>
-            <th style="color: #718EBF;">Quantity</th>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Order Details</th>
+            <th>Product</th>
+            <th>Quantity</th>
           </tr>
         </thead>
         <tbody>

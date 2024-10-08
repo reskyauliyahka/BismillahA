@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            background-color: #f4f4f4;
+        }
+        
+        /* Main content */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .stats {
+            margin-bottom: 30px;
+        }
+        
+        /* Content */
+        .content {
+            width: 100%;
+            padding: 0px;
+            background-color: #f8f8f8;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            text-align: center;
+        }
+        
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .overview {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        canvas {
+            margin-top: 20px;
+        }
+        
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .content {
+                width: 100%;
+                padding: 15px;
+            }
+        
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+        
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        
+            .search-bar input {
+                width: 100%;
+            }
+        }        
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="main-content">
+
+        <!-- Content -->
+        <div class="content">
+            <div class="stats">
+                <div class="stat-box">
+                    <img src="images/Group 520.png" alt="cust" class="stat-icon">
+                    <p>Total Customers</p>
+                    <strong>1,200</strong>
+                </div>
+                <div class="stat-box">
+                    <img src="images/Group 516.png" alt="orders" class="stat-icon">
+                    <p>Total Orders</p>
+                    <strong>2,500</strong>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-box">
+                    <img src="images/Group 517.png" alt="revenue" class="stat-icon">
+                    <p>Total Revenue</p>
+                    <strong>Rp 32.075.025</strong>
+                </div>
+                <div class="stat-box">
+                    <img src="images/Group 515.png" alt="product" class="stat-icon">
+                    <p>Total Product</p>
+                    <strong>126</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            console.log("User is searching for:", this.value);
+        });        
+    </script>
+</body>
+</html>

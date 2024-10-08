@@ -11,61 +11,38 @@
             font-family: 'Poppins', sans-serif;
             background-color: #f4f6f9;
             display: flex;
-            flex-direction: column;
             min-height: 100vh;
-        }
-        
-        .logo h3 {
-            font-weight: bold;
+            margin: 0;
         }
 
-        .logout a {
-            font-size: 18px;
-            padding: 15px;
-        }
-
+        /* Main content styles */
         .main-content {
-            width: 100%;
+            flex-grow: 1;
             background-color: #f4f6f9;
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
+            padding: 20px;
+            min-height: 100vh;
         }
 
         .pagination .page-link {
             color: #630000;
         }
+
         .pagination .page-link:active {
             background-color: #630000;
             color: #f4f6f9;
         }
 
-        .card {
-            width: 300px;
-        }
-        .d-flex.align-items-start {
-            display: flex;
-            align-items: flex-start; 
-            gap: 20px; 
-        }
-
         .inventory-table {
-            flex-grow: 1; 
+            flex-grow: 1;
         }
 
-        .ms-4 {
-            margin-left: 20px;
-        }
-
-        .card {
-            width: 100%; 
-        }
-    
         table {
-            margin-left: 20px;
             width: 100%;
             border-collapse: collapse;
         }
+
         th, td {
             padding: 10px;
             text-align: left;
@@ -78,22 +55,32 @@
             margin-top: auto;
             padding-bottom: 20px;
         }
+
+        .d-flex.align-items-start {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .ms-4 {
+            margin-left: 20px;
+        }
+
+        .card {
+            width: 100%;
+        }
+
+        .card h5 {
+            text-align: center;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid d-flex fixed-top mb-5">
-            <a class="navbar-brand" style="font-size: 32px;">Inventory</a>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-
-    <div class="d-flex main-content mt-5">
-        <div class="d-flex align-items-start">
-            <div class="inventory-table mb-4" style="font-family: poppins;">
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="d-flex">
+            <div class="inventory-table mb-4">
                 <table class="table table-hover" style="border-radius: 25px; overflow: hidden;">
                     <thead>
                         <tr>
@@ -108,18 +95,18 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="d-flex justify-content-between flex-column m-4" style="min-width: 300px;">
                 <div>
                     <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="addProduct()">Add Product</button>
                     <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="updateProduct()">Update Product</button>
                     <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="deleteProduct()">Delete Product</button>
                 </div>
-                
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title" style="text-align: center;">Overview</h5>
+                        <h5 class="card-title">Overview</h5>
                         <p style="color: #718EBF;">Total Products: <span id="total-products">0</span></p>
+                        <p style="color: #718EBF;">Total Stock: <span id="total-stock">0</span></p>
                     </div>
                 </div>
             </div>
@@ -134,13 +121,17 @@
                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
             </ul>
         </div>
-    </div>       
+    </div>
+
     <script>
-        let products = [];
+        let products = JSON.parse(localStorage.getItem('products')) || [];
         const productList = document.getElementById("productList");
 
+        // Render produk dan simpan perubahan ke localStorage
         function renderProducts() {
             productList.innerHTML = '';
+            let totalStock = 0;
+
             products.forEach((product, index) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
@@ -149,10 +140,19 @@
                     <td>${product.stock}</td>
                     <td>${product.price}</td>
                 `;
-                row.setAttribute("data-index", index); 
+                row.setAttribute("data-index", index);
                 productList.appendChild(row);
+
+                // Add stock to total stock
+                totalStock += parseInt(product.stock);
+
+                // Check if stock is 0 or 1 and show alert
+                if (product.stock <= 1) {
+                    alert(`Produk ${product.product} mendekati batas maksimum)!`);
+                }
             });
-            updateOverview();
+            updateOverview(totalStock);
+            localStorage.setItem('products', JSON.stringify(products)); // Simpan produk ke localStorage setiap kali render
         }
 
         function updateOverview() {
@@ -202,13 +202,11 @@
             }
         }
 
-        function profileClicked() {
-            alert("Profile clicked! You can add functionality here.");
-            // You can redirect or show a modal here
-            // window.location.href = "profile.html"; // Example of redirection
+        // Load products on page load
+        window.onload = function() {
+            renderProducts();
         }
-
-        renderProducts();
     </script>
+
 </body>
 </html>
