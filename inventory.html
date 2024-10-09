@@ -15,7 +15,6 @@
             margin: 0;
         }
 
-        /* Main content styles */
         .main-content {
             flex-grow: 1;
             background-color: #f4f6f9;
@@ -96,11 +95,11 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-between flex-column m-4" style="min-width: 300px;">
-                <div>
-                    <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="addProduct()">Add Product</button>
-                    <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="updateProduct()">Update Product</button>
-                    <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="deleteProduct()">Delete Product</button>
+            <div class="d-flex flex-column m-4" style="min-width: 300px;">
+                <div class="d-flex flex-column mb-3">
+                    <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="openAddModal()">Add Product</button>
+                    <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="openUpdateModal()">Update Product</button>
+                    <button class="btn mb-3 w-100" style="border-radius: 25px; background-color: #630000; color: white;" onclick="openDeleteModal()">Delete Product</button>
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -111,102 +110,237 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="pagination-container">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
+    <!-- Modals -->
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm">
+                        <div class="mb-3">
+                            <label for="newProductName" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="newProductName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newCategory" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="newCategory" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newStock" class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="newStock" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="newPrice" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteForm">
+                        <div class="mb-3">
+                            <label for="deleteProductNumber" class="form-label">Product Number</label>
+                            <input type="number" class="form-control" id="deleteProductNumber" placeholder="Enter product number to delete" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Product Selection Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Select Product to Update</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateForm">
+                        <div class="mb-3">
+                            <label for="updateProductNumber" class="form-label">Product Number</label>
+                            <input type="number" class="form-control" id="updateProductNumber" placeholder="Enter product number to update" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Select</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Product Details Modal -->
+    <div class="modal fade" id="updateDetailsModal" tabindex="-1" aria-labelledby="updateDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateDetailsModalLabel">Edit Product Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="mb-3">
+                            <label for="editProductName" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="editProductName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCategory" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="editCategory" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editStock" class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="editStock" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="editPrice" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Update Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // Initialize products from local storage or set to an empty array
         let products = JSON.parse(localStorage.getItem('products')) || [];
-        const productList = document.getElementById("productList");
 
-        // Render produk dan simpan perubahan ke localStorage
-        function renderProducts() {
-            productList.innerHTML = '';
-            let totalStock = 0;
-
+        // Function to display products
+        function displayProducts() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = ''; // Clear current product list
             products.forEach((product, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${product.product}</td>
-                    <td>${product.category}</td>
-                    <td>${product.stock}</td>
-                    <td>${product.price}</td>
+                const row = `
+                    <tr>
+                        <td style="color: #630000;">${product.name}</td>
+                        <td style="color: #630000;">${product.category}</td>
+                        <td style="color: #630000;">${product.stock}</td>
+                        <td style="color: #630000;">${product.price}</td>
+                    </tr>
                 `;
-                row.setAttribute("data-index", index);
-                productList.appendChild(row);
-
-                // Add stock to total stock
-                totalStock += parseInt(product.stock);
-
-                // Check if stock is 0 or 1 and show alert
-                if (product.stock <= 1) {
-                    alert(`Produk ${product.product} mendekati batas maksimum)!`);
-                }
+                productList.innerHTML += row;
             });
-            updateOverview(totalStock);
-            localStorage.setItem('products', JSON.stringify(products)); // Simpan produk ke localStorage setiap kali render
-        }
 
-        function updateOverview() {
+            // Update total products and stock
             document.getElementById('total-products').innerText = products.length;
+            const totalStock = products.reduce((total, product) => total + product.stock, 0);
+            document.getElementById('total-stock').innerText = totalStock;
         }
 
-        function addProduct() {
-            const product = prompt("Enter product name:");
-            const category = prompt("Enter product category:");
-            const stock = prompt("Enter stock:");
-            const price = parseFloat(prompt("Enter product price:"));
+        // Function to open add product modal
+        function openAddModal() {
+            const addModal = new bootstrap.Modal(document.getElementById('addModal'));
+            addModal.show();
+        }
 
-            if (product && category && stock && !isNaN(price)) {
-                products.push({ product, category, stock, price });
-                renderProducts();
+        // Add product
+        document.getElementById('addForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const newProduct = {
+                name: document.getElementById('newProductName').value,
+                category: document.getElementById('newCategory').value,
+                stock: parseInt(document.getElementById('newStock').value),
+                price: parseFloat(document.getElementById('newPrice').value)
+            };
+
+            products.push(newProduct); // Add new product to array
+            localStorage.setItem('products', JSON.stringify(products)); // Save to local storage
+            displayProducts(); // Update product display
+            document.getElementById('addModal').modal('hide'); // Hide modal
+        });
+
+        // Function to open delete modal
+        function openDeleteModal() {
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+
+        // Delete product
+        document.getElementById('deleteForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+            const productNumber = parseInt(document.getElementById('deleteProductNumber').value) - 1;
+
+            if (productNumber >= 0 && productNumber < products.length) {
+                products.splice(productNumber, 1); // Remove product from array
+                localStorage.setItem('products', JSON.stringify(products)); // Save to local storage
+                displayProducts(); // Update product display
+                document.getElementById('deleteModal').modal('hide'); // Hide modal
             } else {
-                alert("Please fill all product details correctly.");
+                alert('Invalid product number!');
             }
+        });
+
+        // Function to open update product selection modal
+        function openUpdateModal() {
+            const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+            updateModal.show();
         }
 
-        function updateProduct() {
-            const index = prompt(`Enter the product number to update (1-${products.length}):`);
-            if (index && index > 0 && index <= products.length) {
-                const product = prompt("Enter new product name:", products[index - 1].product);
-                const category = prompt("Enter new category:", products[index - 1].category);
-                const stock = prompt("Enter new stock:", products[index - 1].stock);
-                const price = parseFloat(prompt("Enter new price:", products[index - 1].price));
+        // Update product selection
+        document.getElementById('updateForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+            const productNumber = parseInt(document.getElementById('updateProductNumber').value) - 1;
 
-                if (product && category && stock && !isNaN(price)) {
-                    products[index - 1] = { product, category, stock, price };
-                    renderProducts();
-                } else {
-                    alert("Please fill all product details correctly.");
-                }
+            if (productNumber >= 0 && productNumber < products.length) {
+                const product = products[productNumber];
+                document.getElementById('editProductName').value = product.name;
+                document.getElementById('editCategory').value = product.category;
+                document.getElementById('editStock').value = product.stock;
+                document.getElementById('editPrice').value = product.price;
+
+                const updateDetailsModal = new bootstrap.Modal(document.getElementById('updateDetailsModal'));
+                updateDetailsModal.show();
+
+                // Update product details
+                document.getElementById('editForm').onsubmit = function (e) {
+                    e.preventDefault();
+                    product.name = document.getElementById('editProductName').value;
+                    product.category = document.getElementById('editCategory').value;
+                    product.stock = parseInt(document.getElementById('editStock').value);
+                    product.price = parseFloat(document.getElementById('editPrice').value);
+
+                    localStorage.setItem('products', JSON.stringify(products)); // Save to local storage
+                    displayProducts(); // Update product display
+                    updateDetailsModal.hide(); // Hide modal
+                };
             } else {
-                alert("Invalid product number.");
+                alert('Invalid product number!');
             }
-        }
+        });
 
-        function deleteProduct() {
-            const index = prompt(`Enter the product number to delete (1-${products.length}):`);
-            if (index && index > 0 && index <= products.length) {
-                products.splice(index - 1, 1);
-                renderProducts();
-            } else {
-                alert("Invalid product number.");
-            }
-        }
-
-        // Load products on page load
-        window.onload = function() {
-            renderProducts();
-        }
+        // Display products on page load
+        displayProducts();
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

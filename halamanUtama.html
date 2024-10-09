@@ -51,20 +51,16 @@
             width: 175px; /* Lebar normal */
             height: 45px; /* Tinggi normal */
             padding: 10px 10px; /* Padding normal */
-            transition: background-color 0.3s ease, coloe 0.3s, transform 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s, transform 0.3s ease;
         }
 
         .menu-item:hover {
-            width: 175px; /* Lebar saat dihover */
-            height: 45px; /* Tinggi saat dihover */
             background-color: #FFB800;
             color: #630000;
-            transform: scale(1.00);
         }
 
         .menu-item:active {
             background-color: #e6a700;
-            transform: scale(1.00); /* You can keep it if you want the same scale on active */
         }
 
         .menu-item .text {
@@ -147,6 +143,7 @@
         .notification-item:last-child {
             margin-bottom: 0;
         }
+        
     </style>
 </head>
 <body>
@@ -178,9 +175,6 @@
             <div class="dashboard-title" id="dashboardTitle">Dashboard</div>
             <div class="dashboard-icons">
                 <img src="images/Group 519.png" alt="notifikasi" height="50" width="50" onclick="toggleNotification()">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search for something" id="search">
-                </div>
                 <div class="user-profile">
                     <img src="images/profile.jpeg" alt="User" class="user-image" height="60" width="60">
                 </div>
@@ -190,17 +184,16 @@
         <iframe id="contentFrame" src="dashboard.html"></iframe>
 
         <!-- Notification Box -->
-        <div class="notification-box" id="notificationBox">
-            <div class="notification-item">Notification 1</div>
-            <div class="notification-item">Notification 2</div>
-            <div class="notification-item">Notification 3</div>
-        </div>
+        <div class="notification-box" id="notificationBox"></div>
     </div>
 
     <script>
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+
         function loadPage(page, title) {
             document.getElementById('contentFrame').src = page; // Muat konten di iframe utama
             document.getElementById('dashboardTitle').textContent = title; // Perbarui judul
+            checkStock(); // Check stock whenever a page is loaded
         }
 
         function toggleNotification() {
@@ -209,6 +202,27 @@
                 notificationBox.style.display = "block"; // Tampilkan kotak notifikasi
             } else {
                 notificationBox.style.display = "none"; // Sembunyikan kotak notifikasi
+            }
+        }
+
+        function checkStock() {
+            const products = JSON.parse(localStorage.getItem('products'));
+            const notificationBox = document.getElementById('notificationBox');
+            notificationBox.innerHTML = ''; // Clear existing notifications
+
+            products.forEach(product => {
+                if (product.stock <= 5) {
+                    const notificationItem = document.createElement('div');
+                    notificationItem.className = 'notification-item';
+                    notificationItem.textContent = `${product.name} is low on stock: ${product.stock} left.`;
+                    notificationBox.appendChild(notificationItem);
+                }
+            });
+
+            if (notificationBox.children.length > 0) {
+                notificationBox.style.display = "block"; // Show notification box if there are notifications
+            } else {
+                notificationBox.style.display = "none"; // Hide if no notifications
             }
         }
 

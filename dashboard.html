@@ -99,24 +99,24 @@
                 <div class="stat-box">
                     <img src="images/Group 520.png" alt="cust" class="stat-icon">
                     <p>Total Customers</p>
-                    <strong>1,200</strong>
+                    <strong id="total-customers">Loading...</strong>
                 </div>
                 <div class="stat-box">
                     <img src="images/Group 516.png" alt="orders" class="stat-icon">
                     <p>Total Orders</p>
-                    <strong>2,500</strong>
+                    <strong id="total-orders">Loading...</strong>
                 </div>
             </div>
             <div class="stats">
                 <div class="stat-box">
                     <img src="images/Group 517.png" alt="revenue" class="stat-icon">
                     <p>Total Revenue</p>
-                    <strong>Rp 32.075.025</strong>
+                    <strong>Rp 32.075.025</strong> <!-- This is static for now -->
                 </div>
                 <div class="stat-box">
                     <img src="images/Group 515.png" alt="product" class="stat-icon">
-                    <p>Total Product</p>
-                    <strong>126</strong>
+                    <p>Total Products</p>
+                    <strong id="total-products">Loading...</strong>
                 </div>
             </div>
         </div>
@@ -124,9 +124,26 @@
 
     <!-- Scripts -->
     <script>
-        document.getElementById('search').addEventListener('input', function() {
-            console.log("User is searching for:", this.value);
-        });        
+        // Function to fetch data from localStorage and count the number of elements in each array
+        function fetchDashboardData() {
+            // Retrieve arrays from localStorage and parse them
+            const customersArray = JSON.parse(localStorage.getItem('orders')) || [];
+            const ordersArray = JSON.parse(localStorage.getItem('orders')) || [];
+            const productsArray = JSON.parse(localStorage.getItem('products')) || [];
+
+            // Count the number of elements in each array
+            const totalCustomers = customersArray.length;
+            const totalOrders = ordersArray.length;
+            const totalProducts = productsArray.length;
+
+            // Update the dashboard with the count of elements
+            document.getElementById('total-customers').textContent = totalCustomers;
+            document.getElementById('total-orders').textContent = totalOrders;
+            document.getElementById('total-products').textContent = totalProducts;
+        }
+
+        // Call the function to fetch and count data when the page loads
+        fetchDashboardData();
     </script>
 </body>
 </html>
