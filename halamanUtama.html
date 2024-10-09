@@ -19,7 +19,6 @@
             height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 250px;
             background-color: #630000;
@@ -48,9 +47,9 @@
             margin-left: 18px;
             border-radius: 8px;
             cursor: pointer;
-            width: 175px; /* Lebar normal */
-            height: 45px; /* Tinggi normal */
-            padding: 10px 10px; /* Padding normal */
+            width: 175px;
+            height: 45px;
+            padding: 10px 10px;
             transition: background-color 0.3s ease, color 0.3s, transform 0.3s ease;
         }
 
@@ -68,14 +67,12 @@
             font-weight: 300;
         }
 
-        /* Main content */
         .main-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* Header */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -115,17 +112,16 @@
 
         iframe {
             width: 100%;
-            height: calc(100% - 60px); /* Sesuaikan tinggi iframe agar pas dengan konten */
+            height: calc(100% - 60px);
             border: none;
-            margin-top: 0; /* Menghapus margin atas */
+            margin-top: 0;
         }
 
-        /* Notification Box */
         .notification-box {
             display: none;
             position: absolute;
             right: 30px;
-            top: 80px; /* Adjust this value according to your layout */
+            top: 80px;
             width: 300px;
             background: white;
             border-radius: 8px;
@@ -143,7 +139,6 @@
         .notification-item:last-child {
             margin-bottom: 0;
         }
-        
     </style>
 </head>
 <body>
@@ -183,51 +178,73 @@
 
         <iframe id="contentFrame" src="dashboard.html"></iframe>
 
-        <!-- Notification Box -->
         <div class="notification-box" id="notificationBox"></div>
+
+        <!-- Audio element for notification sound -->
+        <audio id="notificationSound" src="audio/notif.mp3" preload="auto"></audio>
     </div>
 
     <script>
         let products = JSON.parse(localStorage.getItem('products')) || [];
 
         function loadPage(page, title) {
-            document.getElementById('contentFrame').src = page; // Muat konten di iframe utama
-            document.getElementById('dashboardTitle').textContent = title; // Perbarui judul
-            checkStock(); // Check stock whenever a page is loaded
+            document.getElementById('contentFrame').src = page;
+            document.getElementById('dashboardTitle').textContent = title;
         }
 
         function toggleNotification() {
             const notificationBox = document.getElementById('notificationBox');
-            if (notificationBox.style.display === "none" || notificationBox.style.display === "") {
-                notificationBox.style.display = "block"; // Tampilkan kotak notifikasi
-            } else {
-                notificationBox.style.display = "none"; // Sembunyikan kotak notifikasi
+            notificationBox.style.display = notificationBox.style.display === "block" ? "none" : "block";
+            if (notificationBox.style.display === "block") {
+                checkStock();
             }
         }
 
         function checkStock() {
             const products = JSON.parse(localStorage.getItem('products'));
             const notificationBox = document.getElementById('notificationBox');
-            notificationBox.innerHTML = ''; // Clear existing notifications
+            notificationBox.innerHTML = '';
+
+            let hasNotification = false; // Flag to check if there are notifications
+            let lowStockProducts = []; // Array to keep track of low stock products
 
             products.forEach(product => {
                 if (product.stock <= 5) {
                     const notificationItem = document.createElement('div');
                     notificationItem.className = 'notification-item';
-                    notificationItem.textContent = `${product.name} is low on stock: ${product.stock} left.`;
+                    notificationItem.textContent = `Stok ${product.name} hampir habis: ${product.stock} tersisa.`;
                     notificationBox.appendChild(notificationItem);
+                    lowStockProducts.push(product); // Add to the list of low stock products
+                    hasNotification = true; // Set flag to true if there's at least one notification
                 }
             });
 
-            if (notificationBox.children.length > 0) {
-                notificationBox.style.display = "block"; // Show notification box if there are notifications
-            } else {
-                notificationBox.style.display = "none"; // Hide if no notifications
+            // Play notification sound if there are notifications
+            if (hasNotification) {
+                const notificationSound = document.getElementById('notificationSound');
+
+                // Check if any product's stock is exactly 1
+                if (lowStockProducts.some(product => product.stock === 1)) {
+                    notificationSound.play().catch(error => {
+                        console.error("Error playing sound:", error);
+                    });
+                }
             }
         }
 
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'products') {
+                const newProducts = JSON.parse(event.newValue);
+                products = newProducts;
+                if (products.some(product => product.stock <= 5)) {
+                    document.getElementById('notificationBox').style.display = "block";
+                    checkStock();
+                }
+            }
+        });
+
         function logout() {
-            window.location.href = 'halamanLogin.html'; // Kembali ke halaman login
+            window.location.href = 'halamanLogin.html';
         }
     </script>
 </body>
